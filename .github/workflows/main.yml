@@ -28,4 +28,12 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/masaratpp:v1
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:latest
+      -
+        name: Tag with version
+        run: docker tag ${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:latest ${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:v1
+      -
+        name: Push images
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:v1
