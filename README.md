@@ -3,7 +3,7 @@ Webpack Node.js Application Running Inside Docker - Continuous Integration and D
 
 # Docker
 ```bash
-docker run -d -p 8080:8080 yynoam/masarApp
+docker run -d -p 8080:8080 yynoam/masarapp
 ```
 
 
