@@ -29,3 +29,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:v1
+      -
+        name: Build and Push Docker image
+        run: |
+          docker buildx create --use
+          docker buildx build --push -t ${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:v1 .
