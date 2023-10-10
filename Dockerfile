@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:current-alpine3.18
 
 COPY . /src
 WORKDIR /src
