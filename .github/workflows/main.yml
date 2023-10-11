@@ -37,18 +37,18 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: Snyk Code test
-        run: snyk code test --sarif > snyk.sarif || true
+        run: snyk code test 
 
-      - name: debug
-        run: ls -la
+      # - name: debug
+      #   run: ls -la
 
-      - name: debug snyk.sarif
-        run: cat snyk.sarif
+      # - name: debug snyk.sarif
+      #   run: cat snyk.sarif
 
-      - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: snyk.sarif
+      # - name: Upload result to GitHub Code Scanning
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   with:
+      #     sarif_file: snyk.sarif
 
 # jobs:
 #   build:
