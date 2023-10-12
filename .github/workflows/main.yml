@@ -76,36 +76,60 @@ on:
 # #           file: ./Dockerfile
 # #           push: true
 # #           tags: ${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v3
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+#       - name: "Build Image"
+#         uses: docker/build-push-action@v3.2.0
+#         with:
+#           context: .
+#           push: false
+#           tags: ${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:${{ github.sha }}
+
+#       - name: Run Trivy vulnerability Scanner Before Push
+#         uses: aquasecurity/trivy-action@master
+#         with:
+#           image-ref: "${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:${{ github.sha }}"
+#           format: "table"
+#           exit-code: '0'
+#           ignore-unfixed: true
+#           vuln-type: "os,library"
+#           severity: "LOW"
+
+#       - name: "Push Scanned Image to docker hub"
+#         run: |
+#           docker push ${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:${{ github.sha }}
+
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: "Build Image"
-        uses: docker/build-push-action@v3.2.0
-        with:
-          context: .
-          push: false
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:${{ github.sha }}
-
-      - name: Run Trivy vulnerability Scanner Before Push
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: "${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:${{ github.sha }}"
-          format: "table"
-          exit-code: '0'
-          ignore-unfixed: true
-          vuln-type: "os,library"
-          severity: "LOW"
-
-      - name: "Push Scanned Image to docker hub"
-        run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:${{ github.sha }}
+    code-scan:
+      runs-on: ubuntu-20.04
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+  
+        - name: Run static analysis
+          uses: aquasecurity/trivy-action@master
+          with:
+            scan-type: 'fs'
+            security-checks: 'vuln,secret,config'
+            ignore-unfixed: true
+            format: 'sarif'
+            output: 'trivy-results.sarif'
+            severity: 'CRITICAL'
+  
+  
+        - name: Upload Trivy scan results to GitHub Security tab
+          uses: github/codeql-action/upload-sarif@v2
+          with:
+            sarif_file: 'trivy-results.sarif'
+            category: 'code'
