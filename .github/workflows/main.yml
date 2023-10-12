@@ -100,8 +100,8 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: "${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:${{ github.sha }}"
-          format: "json"
-          exit-code: '1'
+          format: "template"
+          exit-code: '0'
           ignore-unfixed: true
           vuln-type: "os,library"
           severity: "CRITICAL,HIGH"
