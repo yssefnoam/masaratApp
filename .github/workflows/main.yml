@@ -65,6 +65,30 @@ jobs:
         run: |
           echo "NEW_VERSION=$((${{ secrets.VERSION }}+1))" >> $GITHUB_ENV
 
+
+      - uses: actions/checkout@v3
+        name: changing the deployment of git repo
+        with:
+            repository: yssefnoam/masaratAppIac
+            token: ${{ secrets.GITHUB_TOKEN }}
+      - name: modify the image
+        run: |
+            git config user.email 2020noam@gmail.com
+            git config user.name yssefnoam
+            pwd
+            cat kubernetes/deployment.yaml
+            pwd
+            # sed -i "s+tanmay238/images.*+tanmay238/images:app-${{ secrets.VERSION }}+g" kubernetes/deployment.yaml
+            sed -i 's/\(image: yynoam\/masaratapp:\)\(.*\)/image: yynoam\/masaratapp:${{ secrets.VERSION }}/g' kubernetes/deployment.yaml
+            cat kubernetes/deployment.yaml
+            git add .
+            git commit -m 'Done  by Github Actions   Job change manifest: ${{ secrets.VERSION }}'
+            git push origin main
+        env:
+            GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+            GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
+            RUN_NUMBER: ${{ github.run_number }}
+
       - name: Update patch version
         uses: hmanzur/actions-set-secret@v2.0.0
         with:
@@ -72,4 +96,3 @@ jobs:
             value: ${{ env.NEW_VERSION }}
             repository: yssefnoam/masaratApp
             token: ${{ secrets.REPO_ACCESS_TOKEN }}
-
