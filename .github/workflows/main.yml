@@ -61,11 +61,20 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:${{ secrets.VERSION }}
 
-      - name: Update version
-        uses: hmanzur/actions-set-secret@v2.0.0
-        with:
-            name: 'VERSION'
-            value: $((${{ secrets.VERSION }}+1))
-            repository: yssefnoam/masaratApp
-            token: ${{ secrets.REPO_ACCESS_TOKEN }}
+    #   - name: Update version
+    #     uses: hmanzur/actions-set-secret@v2.0.0
+    #     with:
+    #         name: 'VERSION'
+    #         value: $((${{ secrets.VERSION }}+1))
+    #         repository: yssefnoam/masaratApp
+    #         token: ${{ secrets.REPO_ACCESS_TOKEN }}
+
+      - name: update Github Actions secret
+        uses: ekowcharles/update-github-actions-secret@v1
+        env:
+            OWNER: yssefnoam
+            REPOSITORY: masaratApp
+            ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+            SECRET_NAME: VERSION
+            SECRET_VALUE: $((${{ secrets.VERSION }}+1))
 
