@@ -8,41 +8,41 @@ on:
 permissions: write-all
 
 jobs:
-  scan:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+#   scan:
+#     runs-on: ubuntu-20.04
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v3
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v3
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build an image from Dockerfile
-        run: |
-          docker build -t docker.io/yynoam/masaratapp:${{ github.sha }} .
+#       - name: Build an image from Dockerfile
+#         run: |
+#           docker build -t docker.io/yynoam/masaratapp:${{ github.sha }} .
 
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
-        with:
-          image-ref: 'docker.io/yynoam/masaratapp:${{ github.sha }}'
-          format: 'template'
-          template: '@/contrib/sarif.tpl'
-          severity: 'CRITICAL,HIGH'
-          output: 'trivy-results.sarif'
+#       - name: Run Trivy vulnerability scanner
+#         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
+#         with:
+#           image-ref: 'docker.io/yynoam/masaratapp:${{ github.sha }}'
+#           format: 'template'
+#           template: '@/contrib/sarif.tpl'
+#           severity: 'CRITICAL,HIGH'
+#           output: 'trivy-results.sarif'
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: 'trivy-results.sarif'
+#       - name: Upload Trivy scan results to GitHub Security tab
+#         uses: github/codeql-action/upload-sarif@v2
+#         with:
+#           sarif_file: 'trivy-results.sarif'
 
   push:
-    needs: scan
+    # needs: scan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
