@@ -1,6 +1,8 @@
 name: ci
 on:
   push:
+    paths-ignore:
+        - 'kubernetes/**'
     branches:
       - "*"
 permissions: write-all
@@ -68,30 +70,30 @@ jobs:
           echo "NEW_VERSION=$((${{ secrets.VERSION }}+1))" >> $GITHUB_ENV
 
 
-      - uses: actions/checkout@v3
-        with:
-            repository: yssefnoam/masaratAppIac
-            token: ${{ secrets.GITHUB_TOKEN }}
+    #   - uses: actions/checkout@v3
+    #     with:
+    #         repository: yssefnoam/masaratAppIac
+    #         token: ${{ secrets.GITHUB_TOKEN }}
 
       - run: |
             sed -i 's/\(image: yynoam\/masaratapp:\)\(.*\)/image: yynoam\/masaratapp:${{ secrets.VERSION }}/g' kubernetes/deployment.yaml
 
-      - name: modify the image
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git commit -m "generated"
-          git remote set-url --push origin https://yssefnoam:${{ secrets.GITHUB_TOKEN}}@github.com/yssefnoam/masaratAppIac
-          git push
+    #   - name: modify the image
+    #     run: |
+    #       git config user.name github-actions
+    #       git config user.email github-actions@github.com
+    #       git add .
+    #       git commit -m "generated"
+    #       git remote set-url --push origin https://yssefnoam:${{ secrets.GITHUB_TOKEN}}@github.com/yssefnoam/masaratAppIac
+    #       git push
 
-    #   - name: Commit changes
-    #     uses: EndBug/add-and-commit@v9
-    #     with:
-    #         author_name: yssefnoam
-    #         author_email: 2020noam@gmail.com
-    #         message: 'Done by Github Action'
-    #         add: './kubernetes/deployment.yaml'
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+            author_name: yssefnoam
+            author_email: 2020noam@gmail.com
+            message: 'Done by Github Action'
+            add: './kubernetes/deployment.yaml'
 
     #   - name: Update patch version
     #     uses: hmanzur/actions-set-secret@v2.0.0
