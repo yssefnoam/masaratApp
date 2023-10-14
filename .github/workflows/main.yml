@@ -69,12 +69,15 @@ jobs:
     #         repository: yssefnoam/masaratApp
     #         token: ${{ secrets.REPO_ACCESS_TOKEN }}
 
-      - name: update Github Actions secret
-        uses: ekowcharles/update-github-actions-secret@0.0.5
-        env:
-            OWNER: yssefnoam
-            REPOSITORY: masaratApp
-            ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
-            SECRET_NAME: VERSION
-            SECRET_VALUE: $((${{ secrets.VERSION }}+1))
+      - name: Autoincrement a new patch version
+        run: |
+          echo "NEW_VERSION=$((${{ secrets.VERSION }}+1))" >> $GITHUB_ENV
+
+      - name: Update patch version
+        uses: hmanzur/actions-set-secret@v2.0.0
+        with:
+            name: 'VERSION'
+            value: ${{ env.NEW_VERSION }}
+            repository: yssefnoam/masaratApp
+            token: ${{ secrets.REPO_ACCESS_TOKEN }}
 
