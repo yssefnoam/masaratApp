@@ -70,7 +70,7 @@ jobs:
     #         token: ${{ secrets.REPO_ACCESS_TOKEN }}
 
       - name: update Github Actions secret
-        uses: ekowcharles/update-github-actions-secret@v1
+        uses: ekowcharles/update-github-actions-secret@0.0.5
         env:
             OWNER: yssefnoam
             REPOSITORY: masaratApp
