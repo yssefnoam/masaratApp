@@ -59,7 +59,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:${{ secrets.VERSION }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/masaratapp:v${{ secrets.VERSION }}
 
       - name: Update version
         uses: hmanzur/actions-set-secret@v2.0.0
