@@ -67,36 +67,28 @@ jobs:
 
 
       - uses: actions/checkout@v3
-        name: changing the deployment of git repo
         with:
             repository: yssefnoam/masaratAppIac
             token: ${{ secrets.GITHUB_TOKEN }}
 
+      - run: |
+            sed -i 's/\(image: yynoam\/masaratapp:\)\(.*\)/image: yynoam\/masaratapp:${{ secrets.VERSION }}/g' kubernetes/deployment.yaml
+
       - name: modify the image
         run: |
-            # git config user.email 2020noam@gmail.com
-            # git config user.name yssefnoam
-            # pwd
-            cat kubernetes/deployment.yaml
-            # pwd
-            # sed -i "s+tanmay238/images.*+tanmay238/images:app-${{ secrets.VERSION }}+g" kubernetes/deployment.yaml
-            sed -i 's/\(image: yynoam\/masaratapp:\)\(.*\)/image: yynoam\/masaratapp:${{ secrets.VERSION }}/g' kubernetes/deployment.yaml
-            cat kubernetes/deployment.yaml
-            # git add .
-            # git commit -m 'Done  by Github Actions   Job change manifest: ${{ secrets.VERSION }}'
-            # git push origin main
-        env:
-            GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
-            GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
-            RUN_NUMBER: ${{ github.run_number }}
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "generated"
+          git push
 
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v9
-        with:
-            author_name: yssefnoam
-            author_email: 2020noam@gmail.com
-            message: 'Done by Github Action'
-            add: './kubernetes/deployment.yaml'
+    #   - name: Commit changes
+    #     uses: EndBug/add-and-commit@v9
+    #     with:
+    #         author_name: yssefnoam
+    #         author_email: 2020noam@gmail.com
+    #         message: 'Done by Github Action'
+    #         add: './kubernetes/deployment.yaml'
 
     #   - name: Update patch version
     #     uses: hmanzur/actions-set-secret@v2.0.0
