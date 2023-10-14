@@ -80,6 +80,7 @@ jobs:
           git config user.email github-actions@github.com
           git add .
           git commit -m "generated"
+          git remote set-url --push origin https://yssefnoam:${{ secrets.GITHUB_TOKEN}}@github.com/yssefnoam/masaratAppIac
           git push
 
     #   - name: Commit changes
