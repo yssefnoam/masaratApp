@@ -10,9 +10,11 @@
   "author": "dev3l",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.18.2",
+    "jade": "^1.11.0",
+    "morgan": "^1.10.0",
     "react": "^0.14.8",
-    "react-dom": "^0.14.8",
-    "express": "^4.13.4"
+    "react-dom": "^0.14.8"
   },
   "devDependencies": {
     "babel-core": "^6.7.4",
@@ -21,5 +23,14 @@
     "html-webpack-plugin": "^2.15.0",
     "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yssefnoam/masaratApp.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/yssefnoam/masaratApp/issues"
+  },
+  "homepage": "https://github.com/yssefnoam/masaratApp#readme"
 }
