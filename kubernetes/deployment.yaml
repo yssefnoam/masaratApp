@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: massratapp
-        image: yynoam/masaratapp:6
+        image: yynoam/masaratapp:7
         ports:
         - containerPort: 8081
 
